@@ -21,14 +21,14 @@ HEADERS=include/main.h
 
 all: $(EXECUTABLES) RNG_test
 
-PractRand_0.93.zip:
-	(curl -OL https://downloads.sourceforge.net/project/pracrand/PractRand_0.93.zip)
+PractRand-pre0.95.zip:
+	(curl -OL https://downloads.sourceforge.net/project/pracrand/PractRand-pre0.95.zip)
 
-practrand-0.93-bigbuffer.patch :
-	(curl -OL http://www.pcg-random.org/downloads/practrand-0.93-bigbuffer.patch)
+practrand-pre0.95-bigbuffer.patch :
+	practrand-pre0.95-bigbuffer.patch
 
-RNG_test: practrand-0.93-bigbuffer.patch PractRand_0.93.zip
-	(unzip -qo PractRand_0.93.zip -d build && cd build &&  cat ../practrand-0.93-bigbuffer.patch | patch -p0 && $(CXX) -std=c++14 -c src/*.cpp src/RNGs/*.cpp src/RNGs/other/*.cpp -O3 -Iinclude -pthread &&  ar rcs libPractRand.a *.o &&  $(CXX) -std=c++14 -o RNG_test tools/RNG_test.cpp libPractRand.a -O3 -Iinclude -pthread && cp RNG_test ..)
+RNG_test: practrand-pre0.95-bigbuffer.patch PractRand-pre0.95.zip
+	(unzip -qo PractRand-pre0.95.zip -d build && cd build &&  cat ../practrand-pre0.95-bigbuffer.patch | patch -p0 && $(CXX) -std=c++14 -c src/*.cpp src/RNGs/*.cpp src/RNGs/other/*.cpp -O3 -Iinclude -pthread &&  ar rcs libPractRand.a *.o &&  $(CXX) -std=c++14 -o RNG_test tools/RNG_test.cpp libPractRand.a -O3 -Iinclude -pthread && cp RNG_test ..)
 
 testmitchellmoore: src/testmitchellmoore.c
 	$(CC) $(CFLAGS) -o testmitchellmoore src/testmitchellmoore.c -I../source
